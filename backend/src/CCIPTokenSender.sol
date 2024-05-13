@@ -9,6 +9,7 @@ import {LinkTokenInterface} from "@chainlink/contracts/src/v0.8/shared/interface
 
 contract CCIPTokenSender is OwnerIsCreator {
     IRouterClient router;
+    
     LinkTokenInterface linkToken;
 
     error NotEnoughBalance(uint256 currentBalance, uint256 calculatedFees);
