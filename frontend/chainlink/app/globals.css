@@ -6,3 +6,27 @@ body {
   background-image: url("../public/purple.png");
   background-size: cover;
 }
+.connectButton {
+  width: 18rem; /* 72 */
+  height: 4rem; /* 16 */
+  background-color: #CC8677;
+  border-radius: 1rem; /* 2xl */
+  font-size: 1.5rem; /* 2xl */
+  font-weight: bold;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.customConnectButton {
+  width: 18rem; /* 72 */
+  height: 4rem; /* 16 */
+  background-color: #CC8677;
+  border-radius: 1rem; /* 2xl */
+  font-size: 1.5rem; /* 2xl */
+  font-weight: bold;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
