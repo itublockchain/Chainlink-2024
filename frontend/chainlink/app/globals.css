@@ -30,3 +30,27 @@ body {
   align-items: center;
   justify-content: center;
 }
+
+.customNavConnectButton {
+  color: black;
+  width: 14rem; /* 40/4 = 10rem */
+  height: 3rem; /* 12/4 = 3rem */
+  border-radius: 1.5rem; /* 24px = 1.5rem */
+  background-color: white;
+  opacity: 0.8;
+  font-size: 1.25rem; /* 20px = 1.25rem */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.customNavConnectButton:hover {
+  opacity: 1;
+}
+
+.customNavConnectButton:active {
+  transform: scale(0.95);
+}
