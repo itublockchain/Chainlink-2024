@@ -109,7 +109,7 @@ export default function Home() {
           </div>
         </div>
         <div className="relative ">
-          <Image
+          {/* <Image
             src={"/dragon.png"}
             alt="Dragon"
             width={500}
@@ -122,7 +122,7 @@ export default function Home() {
             width={500}
             height={500}
             className="absolute top-[490px] left-0 z-0"
-          />
+          /> */}
         </div>
       </div>
     </main>
