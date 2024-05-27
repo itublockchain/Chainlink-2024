@@ -3,128 +3,82 @@ import React, { useState } from "react";
 import Image from "next/image";
 
 const networks = [
-  { name: "Ethereum", logo: "/eth-logo.png" },
-  { name: "Optimism", logo: "/op-logo.png" },
-  { name: "Polygon", logo: "/polygon-logo.png" },
-  { name: "Avalanche", logo: "/avalanche-logo.png" },
-  { name: "Arbitrum", logo: "/arb-logo.png" },
+  { name: "OP Sepolia", image: "/op-logo.png" },
+  { name: "Avalanche Fuji", image: "/avalanche-logo.png" },
+  { name: "Arbitrum", image: "/arb-logo.png" },
+  { name: "Polygon Amoy", image: "/polygon-logo.png" }
 ];
 
-const NetworkModal = ({ isOpen, onClose, onSelect }) => {
-  if (!isOpen) return null;
-
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-      <div className="bg-black bg-opacity-50 p-8 rounded text-white">
-        <h2 className="text-2xl mb-4">Select a Network</h2>
-        <ul className="space-y-4">
-          {networks.map((network) => (
-            <li
-              key={network.name}
-              className="cursor-pointer flex flex-row text-lg"
-              onClick={() => onSelect(network)}
-            >
-              <Image
-                src={network.logo}
-                alt="network logo"
-                width={30}
-                height={30}
-                className="mr-2"
-              />
-              {network.name}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
-};
-
 const Dashboard = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedNetwork, setSelectedNetwork] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedNetwork1, setSelectedNetwork1] = useState("");
+  const [selectedNetwork2, setSelectedNetwork2] = useState("");
+  const [activeSelection, setActiveSelection] = useState(null);
 
-  const handleNetworkSelect = (network) => {
-    setSelectedNetwork(network);
-    setIsModalOpen(false);
+  const handleNetworkClick = (network) => {
+    if (activeSelection === 1) {
+      setSelectedNetwork1(network.name);
+    } else if (activeSelection === 2) {
+      setSelectedNetwork2(network.name);
+    }
+    setShowModal(false);
+  };
+
+  const openModal = (selection) => {
+    setActiveSelection(selection);
+    setShowModal(true);
   };
 
   return (
-    <div className="mt-8 mb-12">
-      <div className="flex flex-col space-y-4">
-        <div className="flex flex-row space-x-4 pl-80 items-center">
-          <div className="bg-white rounded-full w-16 h-16 flex items-center justify-center">
-            {selectedNetwork && (
-              <Image
-                src={selectedNetwork.logo}
-                alt={selectedNetwork.name}
-                width={40}
-                height={40}
-              />
-            )}
-          </div>
-          <p
-            className="flex text-center text-white items-center text-xl cursor-pointer"
-            onClick={() => setIsModalOpen(true)}
-          >
-            {selectedNetwork && selectedNetwork.name} Market
-            <svg
-              width="12px"
-              height="12px"
-              viewBox="0 -4.5 20 20"
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              xmlnsXlink="http://www.w3.org/1999/xlink"
-              className="ml-2"
-            >
-              <title>arrow_down [#339]</title>
-              <desc>Created with Sketch.</desc>
-              <defs></defs>
-              <g
-                id="Page-1"
-                stroke="none"
-                strokeWidth="1"
-                fill="none"
-                fillRule="evenodd"
-              >
-                <g
-                  id="Dribbble-Light-Preview"
-                  transform="translate(-180.000000, -6684.000000)"
-                  fill="#FFFFFF"
-                >
-                  <g id="icons" transform="translate(56.000000, 160.000000)">
-                    <path
-                      d="M144,6525.39 L142.594,6524 L133.987,6532.261 L133.069,6531.38 L133.074,6531.385 L125.427,6524.045 L124,6525.414 C126.113,6527.443 132.014,6533.107 133.987,6535 C135.453,6533.594 134.024,6534.965 144,6525.39"
-                      id="arrow_down-[#339]"
-                    ></path>
-                  </g>
-                </g>
-              </g>
-            </svg>
-          </p>
-        </div>
-        <div className="flex flex-col space-y-10">
-          <div className="flex flex-row justify-center space-x-10">
-            <div className="flex bg-white bg-opacity-85 w-[600px] h-44 rounded-xl flex-col">
-              <p className="text-3xl p-6">Your Supplies</p>
-              <p className="text-lg text-gray-600 p-6">Nothing supplied yet</p>
-            </div>
-            <div className="flex bg-white bg-opacity-85 w-[600px] h-44 rounded-xl flex-col">
-              <p className="text-3xl p-6">Your Borrows</p>
-              <p className="text-lg text-gray-600 p-6">Nothing borrow yet</p>
-            </div>
-          </div>
-          <div className="flex flex-row justify-center space-x-10">
-            <div className="flex bg-white bg-opacity-85 w-[600px] h-[500px] rounded-xl"></div>
-            <div className="flex bg-white bg-opacity-85 w-[600px] h-[500px] rounded-xl"></div>
-          </div>
-        </div>
-        <NetworkModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          onSelect={handleNetworkSelect}
-        />
+    <div className="flex flex-col space-y-10 mt-10 justify-center items-center text-center">
+      <div className="flex flex-col justify-center items-center text-center w-[600px] h-[300px] bg-white opacity-85 rounded-3xl space-y-8">
+        <div className="flex justify-center border-2 border-black text-center items-center w-[250px] h-[60px] rounded-2xl">Total Money: 12.555$</div>
+        <div className="flex justify-center items-center text-center border-2 border-black w-[500px] h-[40px] rounded-2xl">Avalanche Fuji: $7</div>
+        <div className="flex justify-center items-center text-center border-2 border-black w-[500px] h-[40px] rounded-2xl">Polygon Amoy: $5.345</div>
+        <div className="flex justify-center items-center text-center border-2 border-black w-[500px] h-[40px] rounded-2xl">OP Sepolia : $0</div>
       </div>
+      <div className="flex flex-col justify-center items-center text-center w-[1000px] h-[350px] bg-white opacity-85 rounded-3xl space-y-6">
+        <div className="flex flex-row w-[900px] h-[80px] justify-around items-center text-center border-2 border-black rounded-3xl ">
+          <div
+            className="flex items-center border-2 border-black rounded-3xl w-[200px] h-[40px] text-center justify-center cursor-pointer"
+            onClick={() => openModal(1)}
+          >
+            {selectedNetwork1 || "Select Network"}
+          </div>
+          <Image
+            src={"/arrow2.png"}
+            alt="arrow"
+            width={300}
+            height={300}
+          />
+          <div
+            className="flex items-center border-2 border-black rounded-3xl w-[200px] h-[40px] text-center justify-center cursor-pointer"
+            onClick={() => openModal(2)}
+          >
+            {selectedNetwork2 || "Select Network"}
+          </div>
+        </div>
+        <button className="flex justify-center text-center items-center bg-[#44878B] w-64 h-12 rounded-3xl font-bold">Withdraw</button>
+        <button className="flex justify-center text-center items-center bg-[#44878B] w-64 h-12 rounded-3xl font-bold">Redeem</button>
+      </div>
+
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-3xl space-y-4">
+            <h2 className="text-2xl font-bold">Select a Network</h2>
+            {networks.map((network) => (
+              <div
+                key={network.name}
+                className="flex items-center space-x-4 border-2 border-black rounded-3xl w-[250px] h-[60px] text-center justify-center cursor-pointer"
+                onClick={() => handleNetworkClick(network)}
+              >
+                <Image src={network.image} alt={network.name} width={40} height={40} />
+                <span>{network.name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
