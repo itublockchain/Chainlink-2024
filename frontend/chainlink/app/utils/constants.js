@@ -1,8 +1,8 @@
 export const SepoliaStakerAddress = "0xE93bb60F395f8538475D700344C12954C59BE112"
 export const AvalancheSenderAddress = "0x294259C4a3d60C15C287C51eebA38f186DD42eaf"
-export const polygonSelector = 16281711391670634445
-export const avalancheSelector = 14767482510784806043
-export const sepoliaSelector = 16015286601757825753
+export const polygonSelector = 16281711391670634445n
+export const avalancheSelector = 14767482510784806043n
+export const sepoliaSelector = 16015286601757825753n
 
 export const SepoliaStakerABI = [
 	{

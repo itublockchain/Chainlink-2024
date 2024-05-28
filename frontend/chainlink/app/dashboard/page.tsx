@@ -14,13 +14,14 @@ import { config } from "../utils/config";
 import {
   AvalancheSenderABI,
   AvalancheSenderAddress,
+  sepoliaSelector,
   SepoliaStakerABI,
   SepoliaStakerAddress,
 } from "../utils/constants";
 import { avalancheFuji } from "viem/chains";
 import { useAccount } from "wagmi";
-import { consoleDepositAmount, deposit } from "../utils/functions";
-import { parseEther } from "viem";
+import { consoleDepositAmount, deposit, redeem, withdraw } from "../utils/functions";
+import { parseEther, parseUnits } from "viem";
 const Dashboard = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedNetwork1, setSelectedNetwork1] = useState("");
@@ -48,9 +49,10 @@ const Dashboard = () => {
     },
   });
   console.log(isLoading, isPending);
-
+  console.log(Number(parseUnits("0.9", 6)));
+  
   // DENEME
-
+   
   useEffect(() => {
     setIsFirstRender(false);
   }, []);
@@ -103,10 +105,12 @@ const Dashboard = () => {
             {selectedNetwork2 || "Select Network"}
           </div>
         </div>
-        <button className="flex justify-center text-center items-center bg-[#44878B] w-64 h-12 rounded-3xl font-bold">
+        <button className="flex justify-center text-center items-center bg-[#44878B] w-64 h-12 rounded-3xl font-bold"
+        onClick={()=>withdraw(sepoliaSelector,account.address,parseUnits("0.9",6))}>
           Withdraw
         </button>
-        <button className="flex justify-center text-center items-center bg-[#44878B] w-64 h-12 rounded-3xl font-bold">
+        <button className="flex justify-center text-center items-center bg-[#44878B] w-64 h-12 rounded-3xl font-bold"
+        onClick={()=>redeem(account)}>
           Redeem
         </button>
         <button
