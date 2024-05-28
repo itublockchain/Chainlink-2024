@@ -7,6 +7,7 @@ import {
   SepoliaStakerAddress,
 } from "./constants";
 import { type WriteContractReturnType } from "@wagmi/core";
+import { avalancheFuji } from "viem/chains";
 
 // ReadContract Functions
 export const consoleDepositAmount = async (account: any) => {
@@ -14,7 +15,7 @@ export const consoleDepositAmount = async (account: any) => {
     abi: AvalancheSenderABI,
     address: AvalancheSenderAddress,
     functionName: "userDeposits",
-
+    chainId: avalancheFuji.id,
     args: [account.address],
   });
   console.log(Number(result));

@@ -25,6 +25,7 @@ import {
 import { useAccount } from "wagmi";
 import { consoleDepositAmount, deposit, redeem, withdraw } from "../utils/functions";
 import { parseEther, parseUnits } from "viem";
+import { avalancheFuji } from "wagmi/chains";
 
 const Dashboard = () => {
   const [showModal, setShowModal] = useState(false);
@@ -45,6 +46,7 @@ const Dashboard = () => {
         abi: AvalancheSenderABI,
         address: AvalancheSenderAddress,
         functionName: "userDeposits",
+        chainId: avalancheFuji.id,
         args: [account.address],
       });
       setAvalancheMoney(Number(result) / 1000000);
@@ -88,6 +90,8 @@ const Dashboard = () => {
     }
     return null;
   };
+
+
 
   return (
     <div className="flex flex-col space-y-10 mt-10 justify-center items-center text-center">
@@ -133,7 +137,7 @@ const Dashboard = () => {
         </button>
         <button
           className="flex justify-center text-center items-center bg-[#44878B] w-64 h-12 rounded-3xl font-bold"
-          onClick={() => refetch()}
+          onClick={() => consoleDepositAmount(account)}
         >
           Console Deposit
         </button>
