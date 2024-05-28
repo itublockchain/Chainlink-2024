@@ -19,7 +19,8 @@ import {
 } from "../utils/constants";
 import { avalancheFuji } from "viem/chains";
 import { useAccount } from "wagmi";
-// import { consoleDepositAmount } from "../utils/functions";
+import { consoleDepositAmount, deposit } from "../utils/functions";
+import { parseEther } from "viem";
 const Dashboard = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedNetwork1, setSelectedNetwork1] = useState("");
@@ -30,7 +31,7 @@ const Dashboard = () => {
   const [totalMonet, setTotalMoney] = useState(null as any);
   const account = useAccount();
 
-  const { isLoading,isPending,refetch} = useQuery({
+  const { isLoading, isPending, refetch } = useQuery({
     queryKey: ["avalancheMoney"],
     refetchOnMount: false,
     enabled: isFirstRender,
@@ -39,17 +40,16 @@ const Dashboard = () => {
         abi: AvalancheSenderABI,
         address: AvalancheSenderAddress,
         functionName: "userDeposits",
-        
+
         args: [account.address],
       });
-      setAvalancheMoney(Number(result)/1000000);
+      setAvalancheMoney(Number(result) / 1000000);
       console.log(Number(result));
-    }
-  })
-  console.log(isLoading, isPending)
+    },
+  });
+  console.log(isLoading, isPending);
 
   // DENEME
-  
 
   useEffect(() => {
     setIsFirstRender(false);
@@ -73,10 +73,12 @@ const Dashboard = () => {
     <div className="flex flex-col space-y-10 mt-10 justify-center items-center text-center">
       <div className="flex flex-col justify-center items-center text-center w-[600px] h-[300px] bg-white opacity-85 rounded-3xl space-y-8">
         <div className="flex justify-center border-2 border-black text-center items-center w-[250px] h-[60px] rounded-2xl">
-        Total Money: {avalancheMoney !== null ? `$${avalancheMoney}` : "Loading..."}
+          Total Money:{" "}
+          {avalancheMoney !== null ? `$${avalancheMoney}` : "Loading..."}
         </div>
         <div className="flex justify-center items-center text-center border-2 border-black w-[500px] h-[40px] rounded-2xl">
-          Avalanche Fuji: {avalancheMoney !== null ? `$${avalancheMoney}` : "Loading..."}
+          Avalanche Fuji:{" "}
+          {avalancheMoney !== null ? `$${avalancheMoney}` : "Loading..."}
         </div>
         <div className="flex justify-center items-center text-center border-2 border-black w-[500px] h-[40px] rounded-2xl">
           Polygon Amoy: $5.345
@@ -107,9 +109,17 @@ const Dashboard = () => {
         <button className="flex justify-center text-center items-center bg-[#44878B] w-64 h-12 rounded-3xl font-bold">
           Redeem
         </button>
-        <button className="flex justify-center text-center items-center bg-[#44878B] w-64 h-12 rounded-3xl font-bold"
-        onClick={()=>refetch()}>
+        <button
+          className="flex justify-center text-center items-center bg-[#44878B] w-64 h-12 rounded-3xl font-bold"
+          onClick={() => refetch()}
+        >
           Console Deposit
+        </button>
+        <button
+          className="flex justify-center text-center items-center bg-[#44878B] w-64 h-12 rounded-3xl font-bold"
+          onClick={() => deposit(account, parseEther("0.002"))}
+        >
+          Deposit
         </button>
       </div>
 
