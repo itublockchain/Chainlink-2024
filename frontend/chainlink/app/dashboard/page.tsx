@@ -1,6 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Image from "next/image";
+import { useQuery } from "@tanstack/react-query";
 
 const networks = [
   { name: "OP Sepolia", image: "/op-logo.png" },
@@ -14,6 +15,22 @@ const Dashboard = () => {
   const [selectedNetwork1, setSelectedNetwork1] = useState("");
   const [selectedNetwork2, setSelectedNetwork2] = useState("");
   const [activeSelection, setActiveSelection] = useState(null);
+  const [isFirstRender, setIsFirstRender] = useState(true);
+
+  const { isLoading,isPending} = useQuery({
+    queryKey: ["totalMoney"],
+    refetchOnMount: false,
+    enabled: isFirstRender,
+    queryFn: async () => {
+
+    }
+  })
+
+  console.log(isLoading, isPending)
+
+  useEffect(() => {
+    setIsFirstRender(false);
+  }, []);
 
   const handleNetworkClick = (network) => {
     if (activeSelection === 1) {
@@ -24,7 +41,7 @@ const Dashboard = () => {
     setShowModal(false);
   };
 
-  const openModal = (selection) => {
+  const openModal = (selection: number) => {
     setActiveSelection(selection);
     setShowModal(true);
   };
