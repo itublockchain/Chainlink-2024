@@ -4,11 +4,13 @@ import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
 
 const networks = [
-  { name: "OP Sepolia", image: "/op-logo.png" },
-  { name: "Avalanche Fuji", image: "/avalanche-logo.png" },
-  { name: "Arbitrum", image: "/arb-logo.png" },
-  { name: "Polygon Amoy", image: "/polygon-logo.png" },
+  { name: "OP Sepolia", image: "/op-logo.png", selector: "opsepoliaSelector" },
+  { name: "Avalanche Fuji", image: "/avalanche-logo.png", selector: "avalancheSelector" },
+  { name: "Arbitrum", image: "/arb-logo.png", selector: "arbitrumSelector" },
+  { name: "Polygon Amoy", image: "/polygon-logo.png", selector: "polygonSelector" },
+  {name:"Sepolia", image:"/eth-logo.png", selector:"sepoliaSelector"}
 ];
+
 import { readContract } from "wagmi/actions";
 import { config } from "../utils/config";
 import {
@@ -17,11 +19,13 @@ import {
   sepoliaSelector,
   SepoliaStakerABI,
   SepoliaStakerAddress,
+  avalancheSelector,
+  polygonSelector,
 } from "../utils/constants";
-import { avalancheFuji } from "viem/chains";
 import { useAccount } from "wagmi";
 import { consoleDepositAmount, deposit, redeem, withdraw } from "../utils/functions";
 import { parseEther, parseUnits } from "viem";
+
 const Dashboard = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedNetwork1, setSelectedNetwork1] = useState("");
@@ -29,7 +33,7 @@ const Dashboard = () => {
   const [activeSelection, setActiveSelection] = useState(null);
   const [isFirstRender, setIsFirstRender] = useState(true);
   const [avalancheMoney, setAvalancheMoney] = useState(null as any);
-  const [totalMonet, setTotalMoney] = useState(null as any);
+  const [totalMoney, setTotalMoney] = useState(null as any);
   const account = useAccount();
 
   const { isLoading, isPending, refetch } = useQuery({
@@ -41,7 +45,6 @@ const Dashboard = () => {
         abi: AvalancheSenderABI,
         address: AvalancheSenderAddress,
         functionName: "userDeposits",
-
         args: [account.address],
       });
       setAvalancheMoney(Number(result) / 1000000);
@@ -51,8 +54,6 @@ const Dashboard = () => {
   console.log(isLoading, isPending);
   console.log(Number(parseUnits("0.9", 6)));
   
-  // DENEME
-   
   useEffect(() => {
     setIsFirstRender(false);
   }, []);
@@ -66,9 +67,26 @@ const Dashboard = () => {
     setShowModal(false);
   };
 
-  const openModal = (selection: number) => {
+  const openModal = (selection) => {
     setActiveSelection(selection);
     setShowModal(true);
+  };
+
+  const getSelector = (networkName) => {
+    const network = networks.find((net) => net.name === networkName);
+    if (network) {
+      switch (network.selector) {
+        case "sepoliaSelector":
+          return sepoliaSelector;
+        case "avalancheSelector":
+          return avalancheSelector;
+        case "polygonSelector":
+          return polygonSelector;
+        default:
+          return null;
+      }
+    }
+    return null;
   };
 
   return (
@@ -106,7 +124,7 @@ const Dashboard = () => {
           </div>
         </div>
         <button className="flex justify-center text-center items-center bg-[#44878B] w-64 h-12 rounded-3xl font-bold"
-        onClick={()=>withdraw(sepoliaSelector,account.address,parseUnits("0.9",6))}>
+        onClick={()=>withdraw(getSelector(selectedNetwork1), account.address, parseUnits("0.9", 6))}>
           Withdraw
         </button>
         <button className="flex justify-center text-center items-center bg-[#44878B] w-64 h-12 rounded-3xl font-bold"
