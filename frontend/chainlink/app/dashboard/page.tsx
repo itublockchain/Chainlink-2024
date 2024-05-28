@@ -4,11 +4,11 @@ import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
 
 const networks = [
-  { name: "OP Sepolia", image: "/op-logo.png", selector: "opsepoliaSelector" },
-  { name: "Avalanche Fuji", image: "/avalanche-logo.png", selector: "avalancheSelector" },
-  { name: "Arbitrum", image: "/arb-logo.png", selector: "arbitrumSelector" },
-  { name: "Polygon Amoy", image: "/polygon-logo.png", selector: "polygonSelector" },
-  {name:"Sepolia", image:"/eth-logo.png", selector:"sepoliaSelector"}
+  { name: "OP Sepolia", image: "/op-logo.png" },
+  { name: "Avalanche Fuji", image: "/avalanche-logo.png" },
+  { name: "Arbitrum", image: "/arb-logo.png" },
+  { name: "Polygon Amoy", image: "/polygon-logo.png" },
+  { name: "Sepolia", image: "/eth-logo.png" }
 ];
 
 import { readContract } from "wagmi/actions";
@@ -22,10 +22,10 @@ import {
   avalancheSelector,
   polygonSelector,
 } from "../utils/constants";
+import { avalancheFuji } from "viem/chains";
 import { useAccount } from "wagmi";
 import { consoleDepositAmount, deposit, redeem, withdraw } from "../utils/functions";
 import { parseEther, parseUnits } from "viem";
-import { avalancheFuji } from "wagmi/chains";
 
 const Dashboard = () => {
   const [showModal, setShowModal] = useState(false);
@@ -46,7 +46,6 @@ const Dashboard = () => {
         abi: AvalancheSenderABI,
         address: AvalancheSenderAddress,
         functionName: "userDeposits",
-        chainId: avalancheFuji.id,
         args: [account.address],
       });
       setAvalancheMoney(Number(result) / 1000000);
@@ -55,7 +54,7 @@ const Dashboard = () => {
   });
   console.log(isLoading, isPending);
   console.log(Number(parseUnits("0.9", 6)));
-  
+
   useEffect(() => {
     setIsFirstRender(false);
   }, []);
@@ -69,29 +68,30 @@ const Dashboard = () => {
     setShowModal(false);
   };
 
+  const getSelector = (networkName) => {
+    switch (networkName) {
+      case "OP Sepolia":
+        return sepoliaSelector;
+      case "Avalanche Fuji":
+        return avalancheSelector;
+      case "Polygon Amoy":
+        return polygonSelector;
+      default:
+        return sepoliaSelector;
+    }
+  };
+
   const openModal = (selection) => {
     setActiveSelection(selection);
     setShowModal(true);
   };
 
-  const getSelector = (networkName) => {
-    const network = networks.find((net) => net.name === networkName);
-    if (network) {
-      switch (network.selector) {
-        case "sepoliaSelector":
-          return sepoliaSelector;
-        case "avalancheSelector":
-          return avalancheSelector;
-        case "polygonSelector":
-          return polygonSelector;
-        default:
-          return null;
-      }
-    }
-    return null;
+  const handleWithdraw = () => {
+    const selector = getSelector(selectedNetwork1);
+    console.log("Selected Network 1:", selectedNetwork1);
+    console.log("Selector:", selector);
+    withdraw(selector, account.address, parseUnits("0.9", 6));
   };
-
-
 
   return (
     <div className="flex flex-col space-y-10 mt-10 justify-center items-center text-center">
@@ -128,16 +128,16 @@ const Dashboard = () => {
           </div>
         </div>
         <button className="flex justify-center text-center items-center bg-[#44878B] w-64 h-12 rounded-3xl font-bold"
-        onClick={()=>withdraw(getSelector(selectedNetwork1), account.address, parseUnits("0.9", 6))}>
+          onClick={handleWithdraw}>
           Withdraw
         </button>
         <button className="flex justify-center text-center items-center bg-[#44878B] w-64 h-12 rounded-3xl font-bold"
-        onClick={()=>redeem(account)}>
+          onClick={() => redeem(account)}>
           Redeem
         </button>
         <button
           className="flex justify-center text-center items-center bg-[#44878B] w-64 h-12 rounded-3xl font-bold"
-          onClick={() => consoleDepositAmount(account)}
+          onClick={() => refetch()}
         >
           Console Deposit
         </button>
