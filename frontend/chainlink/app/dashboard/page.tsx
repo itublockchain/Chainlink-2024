@@ -26,11 +26,12 @@ const Dashboard = () => {
   const [selectedNetwork2, setSelectedNetwork2] = useState("");
   const [activeSelection, setActiveSelection] = useState(null);
   const [isFirstRender, setIsFirstRender] = useState(true);
-  const [totalMoney, setTotalMoney] = useState(null as any);
+  const [avalancheMoney, setAvalancheMoney] = useState(null as any);
+  const [totalMonet, setTotalMoney] = useState(null as any);
   const account = useAccount();
 
   const { isLoading,isPending,refetch} = useQuery({
-    queryKey: ["totalMoney"],
+    queryKey: ["avalancheMoney"],
     refetchOnMount: false,
     enabled: isFirstRender,
     queryFn: async () => {
@@ -41,7 +42,7 @@ const Dashboard = () => {
         
         args: [account.address],
       });
-      setTotalMoney(Number(result)/1000000);
+      setAvalancheMoney(Number(result)/1000000);
       console.log(Number(result));
     }
   })
@@ -72,10 +73,10 @@ const Dashboard = () => {
     <div className="flex flex-col space-y-10 mt-10 justify-center items-center text-center">
       <div className="flex flex-col justify-center items-center text-center w-[600px] h-[300px] bg-white opacity-85 rounded-3xl space-y-8">
         <div className="flex justify-center border-2 border-black text-center items-center w-[250px] h-[60px] rounded-2xl">
-        Total Money: {totalMoney !== null ? `$${totalMoney}` : "Loading..."}
+        Total Money: {avalancheMoney !== null ? `$${avalancheMoney}` : "Loading..."}
         </div>
         <div className="flex justify-center items-center text-center border-2 border-black w-[500px] h-[40px] rounded-2xl">
-          Avalanche Fuji: $7
+          Avalanche Fuji: {avalancheMoney !== null ? `$${avalancheMoney}` : "Loading..."}
         </div>
         <div className="flex justify-center items-center text-center border-2 border-black w-[500px] h-[40px] rounded-2xl">
           Polygon Amoy: $5.345
