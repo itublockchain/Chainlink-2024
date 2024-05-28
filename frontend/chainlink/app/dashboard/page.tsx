@@ -19,23 +19,33 @@ import {
 } from "../utils/constants";
 import { avalancheFuji } from "viem/chains";
 import { useAccount } from "wagmi";
-import { consoleDepositAmount } from "../utils/functions";
+// import { consoleDepositAmount } from "../utils/functions";
 const Dashboard = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedNetwork1, setSelectedNetwork1] = useState("");
   const [selectedNetwork2, setSelectedNetwork2] = useState("");
   const [activeSelection, setActiveSelection] = useState(null);
   const [isFirstRender, setIsFirstRender] = useState(true);
+  const [totalMoney, setTotalMoney] = useState(null as any);
   const account = useAccount();
-  // const { isLoading,isPending} = useQuery({
-  //   queryKey: ["totalMoney"],
-  //   refetchOnMount: false,
-  //   enabled: isFirstRender,
-  //   queryFn: async () => {
 
-  //   }
-  // })
-  // console.log(isLoading, isPending)
+  const { isLoading,isPending,refetch} = useQuery({
+    queryKey: ["totalMoney"],
+    refetchOnMount: false,
+    enabled: isFirstRender,
+    queryFn: async () => {
+      const result = await readContract(config, {
+        abi: AvalancheSenderABI,
+        address: AvalancheSenderAddress,
+        functionName: "userDeposits",
+        
+        args: [account.address],
+      });
+      setTotalMoney(Number(result));
+      console.log(Number(result));
+    }
+  })
+  console.log(isLoading, isPending)
 
   // DENEME
   
@@ -62,7 +72,7 @@ const Dashboard = () => {
     <div className="flex flex-col space-y-10 mt-10 justify-center items-center text-center">
       <div className="flex flex-col justify-center items-center text-center w-[600px] h-[300px] bg-white opacity-85 rounded-3xl space-y-8">
         <div className="flex justify-center border-2 border-black text-center items-center w-[250px] h-[60px] rounded-2xl">
-          Total Money: 12.555$
+        Total Money: {totalMoney !== null ? `$${totalMoney}` : "Loading..."}
         </div>
         <div className="flex justify-center items-center text-center border-2 border-black w-[500px] h-[40px] rounded-2xl">
           Avalanche Fuji: $7
@@ -97,7 +107,7 @@ const Dashboard = () => {
           Redeem
         </button>
         <button className="flex justify-center text-center items-center bg-[#44878B] w-64 h-12 rounded-3xl font-bold"
-        onClick={()=>consoleDepositAmount(account)}>
+        onClick={()=>refetch()}>
           Console Deposit
         </button>
       </div>
