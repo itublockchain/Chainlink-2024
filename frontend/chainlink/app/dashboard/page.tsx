@@ -41,7 +41,7 @@ const Dashboard = () => {
         
         args: [account.address],
       });
-      setTotalMoney(Number(result));
+      setTotalMoney(Number(result)/1000000);
       console.log(Number(result));
     }
   })
