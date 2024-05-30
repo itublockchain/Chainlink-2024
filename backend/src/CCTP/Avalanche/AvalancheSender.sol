@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-import {IRouterClient} from "@chainlink/contracts-ccip@1.4.0/src/v0.8/ccip/interfaces/IRouterClient.sol";
-import {OwnerIsCreator} from "@chainlink/contracts-ccip@1.4.0/src/v0.8/shared/access/OwnerIsCreator.sol";
-import {Client} from "@chainlink/contracts-ccip@1.4.0/src/v0.8/ccip/libraries/Client.sol";
-import {IERC20} from "@chainlink/contracts-ccip@1.4.0/src/v0.8/vendor/openzeppelin-solidity/v4.8.3/contracts/token/ERC20/IERC20.sol";
-import {SafeERC20} from "@chainlink/contracts-ccip@1.4.0/src/v0.8/vendor/openzeppelin-solidity/v4.8.3/contracts/token/ERC20/utils/SafeERC20.sol";
+import {IRouterClient} from "@chainlink/contracts-ccip/src/v0.8/ccip/interfaces/IRouterClient.sol";
+import {OwnerIsCreator} from "@chainlink/contracts-ccip/src/v0.8/shared/access/OwnerIsCreator.sol";
+import {Client} from "@chainlink/contracts-ccip/src/v0.8/ccip/libraries/Client.sol";
+import {IERC20} from "@chainlink/contracts-ccip/src/v0.8/vendor/openzeppelin-solidity/v4.8.3/contracts/token/ERC20/IERC20.sol";
+import {SafeERC20} from "@chainlink/contracts-ccip/src/v0.8/vendor/openzeppelin-solidity/v4.8.3/contracts/token/ERC20/utils/SafeERC20.sol";
 import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
-import {Staker} from "./Staker.sol";
+import {Staker} from "../Staker.sol";
 
 // ROUTER 0xf694e193200268f9a4868e4aa017a0118c9a8177
 // LINK 0x0b9d5D9136855f6FEc3c0993feE6E9CE8a297846
@@ -16,7 +16,7 @@ import {Staker} from "./Staker.sol";
 // SEPOLIA Destination 16015286601757825753
 // 0.027 = 27000000000000000
 
-    interface IPangolinRouter {
+interface IPangolinRouter {
     function swapExactAVAXForTokens(
         uint amountOutMin,
         address[] calldata path,
@@ -24,11 +24,10 @@ import {Staker} from "./Staker.sol";
         uint deadline
     ) external payable returns (uint[] memory amounts);
 }
+
 /// @title - A simple messenger contract for transferring tokens to a receiver  that calls a staker contract.
 contract AvalancheSender is OwnerIsCreator {
     using SafeERC20 for IERC20;
-
-
 
     // Custom errors to provide more descriptive revert messages.
     error InvalidRouter(); // Used when the router address is 0
@@ -59,7 +58,8 @@ contract AvalancheSender is OwnerIsCreator {
     IERC20 private immutable i_linkToken;
     IERC20 private immutable i_usdcToken;
     AggregatorV3Interface private oracle;
-    IPangolinRouter public router = IPangolinRouter(0x2D99ABD9008Dc933ff5c0CD271B88309593aB921);
+    IPangolinRouter public router =
+        IPangolinRouter(0x2D99ABD9008Dc933ff5c0CD271B88309593aB921);
     address public WAVAX = 0xd00ae08403B9bbb9124bB305C09058E32C39A48c;
 
     // Mapping to keep track of the receiver contract per destination chain.
@@ -87,7 +87,9 @@ contract AvalancheSender is OwnerIsCreator {
         i_router = IRouterClient(_router);
         i_linkToken = IERC20(_link);
         i_usdcToken = IERC20(_usdcToken);
-        oracle = AggregatorV3Interface(0x5498BB86BC934c8D34FDA08E81D444153d0D06aD);
+        oracle = AggregatorV3Interface(
+            0x5498BB86BC934c8D34FDA08E81D444153d0D06aD
+        );
     }
 
     /// @dev Set the receiver contract for a given destination chain.
@@ -161,7 +163,7 @@ contract AvalancheSender is OwnerIsCreator {
         Client.EVM2AnyMessage memory evm2AnyMessage = Client.EVM2AnyMessage({
             receiver: abi.encode(receiver), // ABI-encoded receiver address
             data: abi.encodeWithSelector(
-            Staker.stake.selector,
+                Staker.stake.selector,
                 _beneficiary,
                 _amount,
                 msg.sender
@@ -195,7 +197,7 @@ contract AvalancheSender is OwnerIsCreator {
             _destinationChainSelector,
             evm2AnyMessage
         );
-        
+
         userDeposits[msg.sender] = userDeposits[msg.sender] - _amount;
         // Emit an event with message details
         emit MessageSent(
@@ -215,24 +217,21 @@ contract AvalancheSender is OwnerIsCreator {
 
     function deposit() public payable {
         require(msg.value > 0, "Deposit amount must be greater than zero");
-        (,int avaxUsdPrice,,,) = oracle.latestRoundData();
+        (, int avaxUsdPrice, , , ) = oracle.latestRoundData();
         require(avaxUsdPrice > 0, "Invalid price from oracle");
         address[] memory path = new address[](2);
-        path[0] = WAVAX;        
-        path[1] = address(i_usdcToken);   
-        uint deadline = block.timestamp + 900; 
+        path[0] = WAVAX;
+        path[1] = address(i_usdcToken);
+        uint deadline = block.timestamp + 900;
         uint256 usdAmount = (msg.value * uint256(avaxUsdPrice)) / 10 ** 20;
-         router.swapExactAVAXForTokens{ value: msg.value }(
+        router.swapExactAVAXForTokens{value: msg.value}(
             usdAmount,
             path,
             address(this),
             deadline
         );
         userDeposits[msg.sender] += usdAmount;
-
     }
-
-     
 
     /// @notice Allows the owner of the contract to withdraw all LINK tokens in the contract and transfer them to a beneficiary.
     /// @dev This function reverts with a 'NothingToWithdraw' error if there are no tokens to withdraw.

@@ -8,14 +8,12 @@ import {IERC20} from "@chainlink/contracts-ccip/src/v0.8/vendor/openzeppelin-sol
 import {SafeERC20} from "@chainlink/contracts-ccip/src/v0.8/vendor/openzeppelin-solidity/v4.8.3/contracts/token/ERC20/utils/SafeERC20.sol";
 import {EnumerableMap} from "@chainlink/contracts-ccip/src/v0.8/vendor/openzeppelin-solidity/v4.8.3/contracts/utils/structs/EnumerableMap.sol";
 
-/**
- * THIS IS AN EXAMPLE CONTRACT THAT USES HARDCODED VALUES FOR CLARITY.
- * THIS IS AN EXAMPLE CONTRACT THAT USES UN-AUDITED CODE.
- * DO NOT USE THIS CODE IN PRODUCTION.
- */
+// Sepolia ROUTER: 0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59
+// Sepolia USDC: 0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238
+// AVALANCHE Destination: 14767482510784806043
 
 /// @title - A simple receiver contract for receiving usdc tokens then calling a staking contract.
-contract Receiver is CCIPReceiver, OwnerIsCreator {
+contract SepoliaReceiver is CCIPReceiver, OwnerIsCreator {
     using SafeERC20 for IERC20;
     using EnumerableMap for EnumerableMap.Bytes32ToUintMap;
 

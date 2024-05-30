@@ -4,12 +4,7 @@ pragma solidity 0.8.19;
 import {ERC20} from "@chainlink/contracts-ccip/src/v0.8/vendor/openzeppelin-solidity/v4.8.3/contracts/token/ERC20/ERC20.sol";
 import {SafeERC20} from "@chainlink/contracts-ccip/src/v0.8/vendor/openzeppelin-solidity/v4.8.3/contracts/token/ERC20/utils/SafeERC20.sol";
 
-
-/**
- * THIS IS AN EXAMPLE CONTRACT THAT USES HARDCODED VALUES FOR CLARITY.
- * THIS IS AN EXAMPLE CONTRACT THAT USES UN-AUDITED CODE.
- * DO NOT USE THIS CODE IN PRODUCTION.
- */
+// sepolia USDC : 0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238
 
 /// @title - A simple Staker contract for staking usc tokens and redeeming the staker contracts
 contract Staker is ERC20 {
@@ -36,11 +31,15 @@ contract Staker is ERC20 {
         if (i_decimals == 0) revert InvalidNumberOfDecimals();
     }
 
-    function stake(address _beneficiary, uint256 _amount) external {
+    function stake(
+        address _beneficiary,
+        uint256 _amount,
+        address _to
+    ) external {
         if (_beneficiary == address(0)) revert InvalidBeneficiary();
         if (_amount == 0) revert InvalidAmount();
 
-        i_usdcToken.safeTransferFrom(msg.sender, address(this), _amount);
+        i_usdcToken.safeTransferFrom(msg.sender, _to, _amount);
         _mint(_beneficiary, _amount);
         emit UsdcStaked(_beneficiary, _amount);
     }
