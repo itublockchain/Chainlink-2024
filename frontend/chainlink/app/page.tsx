@@ -1,4 +1,5 @@
 "use client";
+//@ts-nocheck
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import React from "react";
@@ -7,7 +8,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 export default function Home() {
   return (
     <main className="flex min-h-screen">
-      <div className="flex flex-row ml-12 space-x-64">
+      <div className="flex flex-row ml-12 space-x-32">
         <div className="flex flex-col mt-20 space-y-24">
           <div className="flex flex-col space-y-24">
             <h3 className="text-white text-5xl">Total Value Locked in ABC</h3>
@@ -108,20 +109,22 @@ export default function Home() {
             </button>
           </div>
         </div>
-        <div className="relative ">
-          {/* <Image
+        <div className="">
+          <Image
             src={"/dragon.png"}
             alt="Dragon"
-            width={500}
+            width={600}
             height={500}
-            className="relative z-10"
+            className="relative z-10 min-w-[500px]"
+            sizes="(max-width: 640px) 100vw, 500px"
           />
-          <Image
+          {/* <Image
             src={"/rock.png"}
             alt="Rock"
             width={500}
             height={500}
-            className="absolute top-[490px] left-0 z-0"
+            className="absolute top-[300px] sm:top-[490px] left-0 z-0"
+            sizes="(max-width: 640px) 100vw, 500px"
           /> */}
         </div>
       </div>

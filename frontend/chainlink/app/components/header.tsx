@@ -10,7 +10,7 @@ const Header = () => {
       <header className="z-[999] sticky top-0 bg-transparent">
         <div className="flex flex-row justify-around h-24 items-center border-b-2 border-white border-opacity-65">
           <Link href={"/"}>
-            <h1 className="text-white text-xl">ABC</h1>
+            <h1 className="text-white text-xl">Fusionlink</h1>
           </Link>
           <div className="flex flex-row space-x-24">
             <Link href={"/dashboard"}>
