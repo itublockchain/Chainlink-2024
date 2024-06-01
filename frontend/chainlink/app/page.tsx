@@ -111,11 +111,11 @@ export default function Home() {
         </div>
         <div className="">
           <Image
-            src={"/dragon.png"}
+            src={"/dragonbest.png"}
             alt="Dragon"
             width={600}
             height={500}
-            className="relative z-10 min-w-[500px]"
+            className="relative mt-10 z-10 min-w-[500px]"
             sizes="(max-width: 640px) 100vw, 500px"
           />
           {/* <Image

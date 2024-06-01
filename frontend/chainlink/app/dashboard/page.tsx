@@ -83,7 +83,7 @@ const Dashboard = () => {
       case "Polygon Amoy":
         return polygonSelector;
       default:
-        return sepoliaSelector;
+        return null;
     }
   };
 
@@ -94,6 +94,10 @@ const Dashboard = () => {
 
   const handleWithdraw = () => {
     const selector = getSelector(selectedNetwork1);
+    if (!selector) {
+      alert("Please select a network");
+      return;
+    }
     console.log("Selected Network 1:", selectedNetwork1);
     console.log("Selector:", selector);
     withdraw(selector, account.address, parseUnits("0.9", 6));
@@ -105,29 +109,40 @@ const Dashboard = () => {
         <Image
           src={"/dragonleft.png"}
           alt="dragon"
-          layout="fill"
+          width={500}
+          height={300}
           objectFit="contain"
         />
       </div>
-      <div className="flex flex-col space-y-10 mt-10 justify-center items-center text-center">
-        <div className="flex flex-col justify-center items-center text-center w-[600px] h-[300px] bg-[#E0C7EC] bg-opacity-50 rounded-3xl space-y-8">
-          <div className="flex bg-[#E0C7EC] bg-opacity-80 justify-center border-2 border-black text-center items-center w-[250px] h-[60px] rounded-2xl font-bold">
-            Total Money:{" "}
-            {avalancheMoney !== null ? `$${avalancheMoney}` : "Loading..."}
+      <div className="flex flex-col space-y-16 mt-16 justify-center items-center text-center">
+        <div className="flex flex-col justify-center items-center text-center w-[600px] h-[300px] space-y-8">
+          <div className="relative w-[380px] h-[200px] flex justify-center">
+            <Image src={"/rectangle1.png"} alt="" width={380} height={200} objectFit="cover" />
+            <div className="absolute inset-0 flex items-center justify-center text-black font-bold text-center text-xl">
+              Total Money: {avalancheMoney !== null ? `$${avalancheMoney}` : "Loading..."}
+            </div>
           </div>
-          <div className="flex bg-[#E0C7EC] bg-opacity-80 justify-center items-center text-center border-2 border-black w-[500px] h-[40px] rounded-2xl font-bold">
-            Avalanche Fuji:{" "}
-            {avalancheMoney !== null ? `$${avalancheMoney}` : "Loading..."}
+          <div className="relative w-[300px] h-[200px]">
+            <Image src={"/rectangle2.png"} alt="" width={300} height={200} objectFit="cover"  />
+            <div className="absolute inset-0 flex items-center justify-center text-black font-bold">
+              Avalanche Fuji: {avalancheMoney !== null ? `$${avalancheMoney}` : "Loading..."}
+            </div>
           </div>
-          <div className="flex bg-[#E0C7EC] bg-opacity-80 justify-center items-center text-center border-2 border-black w-[500px] h-[40px] rounded-2xl font-bold">
-            Polygon Amoy: $5.345
+          <div className="relative w-[300px] h-[200px]">
+            <Image src={"/rectangle2.png"} alt="" width={300} height={200} objectFit="cover" />
+            <div className="absolute inset-0 flex items-center justify-center text-black font-bold">
+              Polygon Amoy: $5.345
+            </div>
           </div>
-          <div className="flex bg-[#E0C7EC] bg-opacity-80 justify-center items-center text-center border-2 border-black w-[500px] h-[40px] rounded-2xl font-bold">
-            OP Sepolia : $0
+          <div className="relative w-[300px] h-[200px]">
+            <Image src={"/rectangle2.png"} alt="" width={300} height={200} objectFit="cover" />
+            <div className="absolute inset-0 flex items-center justify-center text-black font-bold">
+              OP Sepolia : $0
+            </div>
           </div>
         </div>
         <div className="flex flex-col justify-center items-center text-center w-[1000px] h-[350px] bg-[#E0C7EC] border-2 border-black bg-opacity-50 rounded-3xl space-y-6">
-          <div className="flex flex-row w-[900px] h-[80px] justify-around items-center text-center  rounded-3xl ">
+          <div className="flex flex-row w-[900px] h-[80px] justify-around items-center text-center rounded-3xl">
             <div
               className="flex items-center bg-[#E0C7EC] bg-opacity-80 border-2 border-black rounded-xl w-[250px] h-[45px] text-center justify-center cursor-pointer text-lg font-bold"
               onClick={() => openModal(1)}
@@ -148,18 +163,8 @@ const Dashboard = () => {
           >
             Withdraw
           </button>
-          {/* <button className="flex justify-center text-center items-center bg-[#44878B] w-64 h-12 rounded-3xl font-bold"
-          onClick={() => redeem(account)}>
-          Redeem
-        </button> */}
-          {/* <button
-          className="flex justify-center text-center items-center bg-[#44878B] w-64 h-12 rounded-3xl font-bold"
-          onClick={() => refetch()}
-        >
-          Console Deposit
-        </button> */}
           <button
-            className="flex justify-center text-center items-center bg-[#E0C7EC] bg-opacity-80  border-2 border-black w-64 h-12 rounded-2xl font-bold"
+            className="flex justify-center text-center items-center bg-[#E0C7EC] bg-opacity-80 border-2 border-black w-64 h-12 rounded-2xl font-bold"
             onClick={() => deposit(account, parseEther("0.002"))}
           >
             Deposit
@@ -173,7 +178,7 @@ const Dashboard = () => {
           >
             <div
               className="bg-white p-6 rounded-3xl space-y-4"
-              onClick={(e) => e.stopPropagation()} 
+              onClick={(e) => e.stopPropagation()}
             >
               <h2 className="text-2xl font-bold">Select a Network</h2>
               {networks.map((network) => (
@@ -199,7 +204,8 @@ const Dashboard = () => {
         <Image
           src={"/dragonright.png"}
           alt="dragon"
-          layout="fill"
+          width={500}
+          height={300}
           objectFit="contain"
         />
       </div>
