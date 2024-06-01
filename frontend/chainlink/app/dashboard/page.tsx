@@ -32,6 +32,7 @@ import {
   withdraw,
 } from "../utils/functions";
 import { parseEther, parseUnits } from "viem";
+import { motion } from "framer-motion";
 
 const Dashboard = () => {
   const [showModal, setShowModal] = useState(false);
@@ -105,7 +106,12 @@ const Dashboard = () => {
 
   return (
     <div className="flex flex-row justify-center">
-      <div className="relative w-1/4 h-96">
+      <motion.div
+        className="relative w-1/4 h-96"
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.4 }}
+      >
         <Image
           src={"/dragonleft.png"}
           alt="dragon"
@@ -113,62 +119,101 @@ const Dashboard = () => {
           height={300}
           objectFit="contain"
         />
-      </div>
-      <div className="flex flex-col space-y-16 mt-16 justify-center items-center text-center">
+      </motion.div>
+      <motion.div
+        className="flex flex-col space-y-16 mt-16 justify-center items-center text-center"
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.4 }}
+      >
         <div className="flex flex-col justify-center items-center text-center w-[600px] h-[300px] space-y-8">
           <div className="relative w-[380px] h-[200px] flex justify-center">
-            <Image src={"/rectangle1.png"} alt="" width={380} height={200} objectFit="cover" />
-            <div className="absolute inset-0 flex items-center justify-center text-black font-bold text-center text-xl">
-              Total Money: {avalancheMoney !== null ? `$${avalancheMoney}` : "Loading..."}
+            <Image
+              src={"/rectangle1.png"}
+              alt=""
+              width={380}
+              height={200}
+              objectFit="cover"
+            />
+            <div className="absolute inset-0 flex items-center justify-center text-black font-bold text-center text-3xl">
+              Total Money:{" "}
+              {avalancheMoney !== null ? `$${avalancheMoney}` : "Loading..."}
             </div>
           </div>
           <div className="relative w-[300px] h-[200px]">
-            <Image src={"/rectangle2.png"} alt="" width={300} height={200} objectFit="cover"  />
-            <div className="absolute inset-0 flex items-center justify-center text-black font-bold">
-              Avalanche Fuji: {avalancheMoney !== null ? `$${avalancheMoney}` : "Loading..."}
+            <Image
+              src={"/rectangle2.png"}
+              alt=""
+              width={300}
+              height={200}
+              objectFit="cover"
+            />
+            <div className="absolute inset-0 flex items-center justify-center text-black font-bold text-xl">
+              Avalanche Fuji:{" "}
+              {avalancheMoney !== null ? `$${avalancheMoney}` : "Loading..."}
             </div>
           </div>
           <div className="relative w-[300px] h-[200px]">
-            <Image src={"/rectangle2.png"} alt="" width={300} height={200} objectFit="cover" />
-            <div className="absolute inset-0 flex items-center justify-center text-black font-bold">
+            <Image
+              src={"/rectangle2.png"}
+              alt=""
+              width={300}
+              height={200}
+              objectFit="cover"
+            />
+            <div className="absolute inset-0 flex items-center justify-center text-black font-bold text-xl">
               Polygon Amoy: $5.345
             </div>
           </div>
           <div className="relative w-[300px] h-[200px]">
-            <Image src={"/rectangle2.png"} alt="" width={300} height={200} objectFit="cover" />
-            <div className="absolute inset-0 flex items-center justify-center text-black font-bold">
+            <Image
+              src={"/rectangle2.png"}
+              alt=""
+              width={300}
+              height={200}
+              objectFit="cover"
+            />
+            <div className="absolute inset-0 flex items-center justify-center text-black font-bold text-xl">
               OP Sepolia : $0
             </div>
           </div>
         </div>
         <div className="flex flex-col justify-center items-center text-center w-[1000px] h-[350px] bg-[#E0C7EC] border-2 border-black bg-opacity-50 rounded-3xl space-y-6">
           <div className="flex flex-row w-[900px] h-[80px] justify-around items-center text-center rounded-3xl">
-            <div
-              className="flex items-center bg-[#E0C7EC] bg-opacity-80 border-2 border-black rounded-xl w-[250px] h-[45px] text-center justify-center cursor-pointer text-lg font-bold"
+            <motion.div
+              className="flex items-center bg-[#CC8677] bg-opacity-80 border-2 border-black rounded-xl w-[250px] h-[45px] text-center justify-center cursor-pointer text-xl font-bold"
               onClick={() => openModal(1)}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
             >
               {selectedNetwork1 || "Select Network"}
-            </div>
+            </motion.div>
             <Image src={"/arrow2.png"} alt="arrow" width={300} height={300} />
-            <div
-              className="flex items-center bg-[#E0C7EC] bg-opacity-80 border-2 border-black rounded-xl w-[250px] h-[45px] text-center justify-center cursor-pointer text-lg font-bold"
+            <motion.div
+              className="flex items-center bg-[#44878B] bg-opacity-80 border-2 border-black rounded-xl w-[250px] h-[45px] text-center justify-center cursor-pointer text-xl font-bold"
               onClick={() => openModal(2)}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
             >
               {selectedNetwork2 || "Select Network"}
-            </div>
+            </motion.div>
           </div>
-          <button
-            className="flex justify-center text-center items-center bg-[#E0C7EC] bg-opacity-80 border-2 border-black w-64 h-12 rounded-2xl font-bold"
+          <motion.button
+            className="flex justify-center text-center items-center bg-[#E0C7EC] bg-opacity-80 border-2 border-black w-64 h-12 rounded-2xl font-bold text-xl hover:bg-purple-400"
             onClick={handleWithdraw}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
           >
             Withdraw
-          </button>
-          <button
-            className="flex justify-center text-center items-center bg-[#E0C7EC] bg-opacity-80 border-2 border-black w-64 h-12 rounded-2xl font-bold"
+          </motion.button>
+          <motion.button
+            className="flex justify-center text-center items-center bg-[#E0C7EC] bg-opacity-80 border-2 border-black w-64 h-12 rounded-2xl font-bold text-xl hover:bg-purple-400"
             onClick={() => deposit(account, parseEther("0.002"))}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
           >
             Deposit
-          </button>
+          </motion.button>
         </div>
 
         {showModal && (
@@ -177,15 +222,17 @@ const Dashboard = () => {
             onClick={() => setShowModal(false)}
           >
             <div
-              className="bg-white p-6 rounded-3xl space-y-4"
+              className="bg-[#E0C7EC] p-6 rounded-3xl space-y-4"
               onClick={(e) => e.stopPropagation()}
             >
               <h2 className="text-2xl font-bold">Select a Network</h2>
               {networks.map((network) => (
-                <div
+                <motion.div
                   key={network.name}
-                  className="flex items-center space-x-4 border-2 border-black rounded-3xl w-[250px] h-[60px] text-center justify-center cursor-pointer"
+                  className="flex items-center space-x-4 border-2 border-black rounded-3xl w-[450px] h-[60px] text-center justify-center cursor-pointer font-bold text-xl hover:bg-purple-400"
                   onClick={() => handleNetworkClick(network)}
+                  whileHover={{ scale: 1.07 }}
+                  whileTap={{ scale: 0.9 }}
                 >
                   <Image
                     src={network.image}
@@ -194,13 +241,18 @@ const Dashboard = () => {
                     height={40}
                   />
                   <span>{network.name}</span>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
         )}
-      </div>
-      <div className="relative w-1/4 h-96">
+      </motion.div>
+      <motion.div
+        className="relative w-1/4 h-96"
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.4 }}
+      >
         <Image
           src={"/dragonright.png"}
           alt="dragon"
@@ -208,7 +260,7 @@ const Dashboard = () => {
           height={300}
           objectFit="contain"
         />
-      </div>
+      </motion.div>
     </div>
   );
 };
