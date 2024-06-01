@@ -3,21 +3,39 @@ import React from "react";
 import Link from "next/link";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const Header = () => {
+  const pathname = usePathname();
+
   return (
     <>
       <header className="z-[999] sticky top-0 bg-transparent">
-        <div className="flex flex-row justify-around h-24 items-center border-b-2 border-white border-opacity-65">
+        <div className="flex flex-row justify-around h-24 items-center text-center border-b-2 border-white border-opacity-65">
           <Link href={"/"}>
-            <h1 className="text-white text-xl">ABC</h1>
+            <h1
+              className={
+                pathname === "/" ? "text-white text-xl" : "text-white text-xl"
+              }
+            >
+              Fusionlink
+            </h1>
           </Link>
           <div className="flex flex-row space-x-24">
             <Link href={"/dashboard"}>
-              <h1 className="text-white text-xl">Dashboard</h1>
+              <h1
+                className={
+                  pathname === "/dashboard"
+                    ? "text-white text-xl border-b-4 border-[#8D6EBF]"
+                    : "text-white text-xl"
+                }
+              >
+                Dashboard
+              </h1>
             </Link>
             <h1 className="text-white text-xl">Markets</h1>
-            <h1 className="text-white text-xl">Profile</h1>
+            <h1 className="text-white text-xl">Governance</h1>
             <h1 className="text-white text-xl">FAQ</h1>
           </div>
           {/* <button className="text-black w-40 h-12 rounded-2xl bg-white opacity-80 text-xl">Launch App</button> */}

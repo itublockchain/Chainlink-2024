@@ -1,13 +1,20 @@
 "use client";
+//@ts-nocheck
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import React from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { motion } from "framer-motion";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen">
-      <div className="flex flex-row ml-12 space-x-64">
+    <motion.main
+      className="flex min-h-screen"
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5, delay: 0.4 }}
+    >
+      <div className="flex flex-row ml-12 space-x-32">
         <div className="flex flex-col mt-20 space-y-24">
           <div className="flex flex-col space-y-24">
             <h3 className="text-white text-5xl">Total Value Locked in ABC</h3>
@@ -103,28 +110,34 @@ export default function Home() {
                 )}
               </ConnectButton.Custom>
             </div>
-            <button className="w-72 h-16 bg-[#44878B] rounded-2xl text-2xl font-bold text-white">
+            <motion.button
+              className="w-72 h-16 bg-[#44878B] rounded-2xl text-2xl font-bold text-white"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
               I&apos;m a dApp
-            </button>
+            </motion.button>
           </div>
         </div>
-        <div className="relative ">
-          {/* <Image
-            src={"/dragon.png"}
-            alt="Dragon"
-            width={500}
-            height={500}
-            className="relative z-10"
-          />
+        <div className="">
           <Image
+            src={"/dragonbest.png"}
+            alt="Dragon"
+            width={600}
+            height={500}
+            className="relative mt-10 z-10 min-w-[500px]"
+            sizes="(max-width: 640px) 100vw, 500px"
+          />
+          {/* <Image
             src={"/rock.png"}
             alt="Rock"
             width={500}
             height={500}
-            className="absolute top-[490px] left-0 z-0"
+            className="absolute top-[300px] sm:top-[490px] left-0 z-0"
+            sizes="(max-width: 640px) 100vw, 500px"
           /> */}
         </div>
       </div>
-    </main>
+    </motion.main>
   );
 }
