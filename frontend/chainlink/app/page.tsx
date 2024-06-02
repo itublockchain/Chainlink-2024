@@ -25,10 +25,11 @@ export default function Home() {
             </h3>
             <h1 className="text-white text-2xl items-center justify-center">
               Making the decentralized apps&apos; (especially lending and
-              borrowing apps) and users&apos; liquidity more secure and more
-              liquid in the matter of multiple chains with a secure way of
-              bridging.
-              {/* <p className="pl-10">swap, and earn interest, borrow assets.</p> */}
+              borrowing apps) 
+              <p className="">and users&apos; liquidity more secure and more
+              liquid in the matter of multiple chains</p>
+              <p>with a secure way of
+              bridging.</p>
             </h1>
           </div>
           <div className="flex flex-row space-x-16">
