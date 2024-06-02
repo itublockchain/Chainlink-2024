@@ -17,13 +17,18 @@ export default function Home() {
       <div className="flex flex-row ml-12 space-x-32">
         <div className="flex flex-col mt-20 space-y-24">
           <div className="flex flex-col space-y-24">
-            <h3 className="text-white text-5xl">Total Value Locked in ABC</h3>
+            <h3 className="text-white text-5xl">
+              Total Value Locked in Fusionlink
+            </h3>
             <h3 className="text-8xl bg-gradient-to-r from-red-200 to-cyan-300 bg-clip-text text-transparent">
               $ 1,567,094,259
             </h3>
             <h1 className="text-white text-2xl items-center justify-center">
-              ABC lets anyone to decentralized crypto trading,
-              <p className="pl-10">swap, and earn interest, borrow assets.</p>
+              Making the decentralized apps&apos; (especially lending and
+              borrowing apps) and users&apos; liquidity more secure and more
+              liquid in the matter of multiple chains with a secure way of
+              bridging.
+              {/* <p className="pl-10">swap, and earn interest, borrow assets.</p> */}
             </h1>
           </div>
           <div className="flex flex-row space-x-16">
@@ -110,13 +115,13 @@ export default function Home() {
                 )}
               </ConnectButton.Custom>
             </div>
-            <motion.button
+            {/* <motion.button
               className="w-72 h-16 bg-[#44878B] rounded-2xl text-2xl font-bold text-white"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
             >
               I&apos;m a dApp
-            </motion.button>
+            </motion.button> */}
           </div>
         </div>
         <div className="">
