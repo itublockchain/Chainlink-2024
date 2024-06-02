@@ -8,7 +8,7 @@ import {IERC20} from "@chainlink/contracts-ccip/src/v0.8/vendor/openzeppelin-sol
 import {SafeERC20} from "@chainlink/contracts-ccip/src/v0.8/vendor/openzeppelin-solidity/v4.8.3/contracts/token/ERC20/utils/SafeERC20.sol";
 import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 import {AutomationCompatibleInterface} from "@chainlink/contracts/src/v0.8/automation/AutomationCompatible.sol";
-import {Pool} from "./Pool.sol";
+import {Pool} from "./SepoliaPool.sol";
 
 // ROUTER 0xf694e193200268f9a4868e4aa017a0118c9a8177
 // LINK 0x0b9d5D9136855f6FEc3c0993feE6E9CE8a297846
