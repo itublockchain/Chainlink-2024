@@ -140,8 +140,8 @@ const Dashboard = () => {
               objectFit="cover"
             />
             <div className="absolute inset-0 flex items-center justify-center text-black font-bold text-center text-3xl">
-              Total Money: $5.345
-              {/* {avalancheMoney !== null ? `$${avalancheMoney}` : "Loading..."} */}
+              Total Money: 
+              {avalancheMoney !== null ? `$${avalancheMoney+5.345}` : "Loading..."}
             </div>
           </div>
           <div className="relative w-[300px] h-[200px]">
