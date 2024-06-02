@@ -36,8 +36,8 @@ import { motion } from "framer-motion";
 
 const Dashboard = () => {
   const [showModal, setShowModal] = useState(false);
-  const [selectedNetwork1, setSelectedNetwork1] = useState("");
-  const [selectedNetwork2, setSelectedNetwork2] = useState("");
+  const [selectedNetwork1, setSelectedNetwork1] = useState(null);
+  const [selectedNetwork2, setSelectedNetwork2] = useState(null);
   const [activeSelection, setActiveSelection] = useState(null);
   const [isFirstRender, setIsFirstRender] = useState(true);
   const [avalancheMoney, setAvalancheMoney] = useState(null as any);
