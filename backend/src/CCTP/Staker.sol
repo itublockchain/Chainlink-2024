@@ -6,6 +6,7 @@ import {SafeERC20} from "@chainlink/contracts-ccip/src/v0.8/vendor/openzeppelin-
 
 // sepolia USDC : 0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238
 
+
 /// @title - A simple Staker contract for staking usc tokens and redeeming the staker contracts
 contract Staker is ERC20 {
     using SafeERC20 for ERC20;
@@ -31,11 +32,7 @@ contract Staker is ERC20 {
         if (i_decimals == 0) revert InvalidNumberOfDecimals();
     }
 
-    function stake(
-        address _beneficiary,
-        uint256 _amount,
-        address _to
-    ) external {
+    function stake(address _beneficiary, uint256 _amount,address _to) external {
         if (_beneficiary == address(0)) revert InvalidBeneficiary();
         if (_amount == 0) revert InvalidAmount();
 
