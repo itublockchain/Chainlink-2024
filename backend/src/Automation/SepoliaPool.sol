@@ -156,11 +156,10 @@ contract Pool is OwnerIsCreator, AutomationCompatibleInterface {
             amount: _amount
         });
         // Create an EVM2AnyMessage struct in memory with necessary information for sending a cross-chain message
-        Client.EVM2AnyMessage memory evm2AnyMessage = Client.EVM2AnyMessage({
+        Client.EVM2AnyMessage memory evm2AnyMessage = ({
             receiver: abi.encode(receiver), // ABI-encoded receiver address
             data: abi.encodeWithSelector(
-                AvalancheSender.sendMessagePayLINK.selector,
-                16015286601757825753,
+                AvalancheSender.increaseNonce.selector,
                 _usdcAmount
             ), // Encode the function selector and the arguments of the stake function
             tokenAmounts: tokenAmounts, // The amount and type of token being transferred

@@ -8,6 +8,7 @@ import {IERC20} from "@chainlink/contracts-ccip/src/v0.8/vendor/openzeppelin-sol
 import {SafeERC20} from "@chainlink/contracts-ccip/src/v0.8/vendor/openzeppelin-solidity/v4.8.3/contracts/token/ERC20/utils/SafeERC20.sol";
 import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 import {Pool} from "./SepoliaPool.sol";
+import {AutomationCompatibleInterface} from "@chainlink/contracts/src/v0.8/automation/AutomationCompatible.sol";
 
 // ROUTER 0xf694e193200268f9a4868e4aa017a0118c9a8177
 // LINK 0x0b9d5D9136855f6FEc3c0993feE6E9CE8a297846
@@ -28,7 +29,7 @@ interface IPangolinRouter {
 }
 
 /// @title - A simple messenger contract for transferring tokens to a receiver  that calls a staker contract.
-contract AvalancheSender is OwnerIsCreator {
+contract AvalancheSender is OwnerIsCreator,AutomationCompatibleInterface {
     using SafeERC20 for IERC20;
 
     // Custom errors to provide more descriptive revert messages.
@@ -66,6 +67,7 @@ contract AvalancheSender is OwnerIsCreator {
     address public poolContract;
     uint256 public nonce=0;
     uint256 public nonceChecker=1;
+    uint256 public amount;
 
     // Mapping to keep track of the receiver contract per destination chain.
     mapping(uint64 => address) public s_receivers;
@@ -232,12 +234,13 @@ contract AvalancheSender is OwnerIsCreator {
         count++;
     }
 
-    function increaseNonce() public  {
+    function increaseNonce(uint256 _amount) public  {
         nonce+=1;
+        amount=_amount;
     }
 
     function checkUpkeep(bytes calldata /*checkData*/ ) external view returns (bool upkeepNeeded,bytes memory /* performData */){
-        if(nonce=1){
+        if(nonce=nonceChecker){
             upkeepNeeded=true;
         }else{
             upkeepNeeded=false;
@@ -246,5 +249,6 @@ contract AvalancheSender is OwnerIsCreator {
 
     function performUpkeep(bytes calldata /*performData*/) external{
         nonceChecker=nonce+1;
+        sendMessagePayLINK(16015286601757825753, amount);
     }
 }
