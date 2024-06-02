@@ -64,6 +64,8 @@ contract AvalancheSender is OwnerIsCreator {
     address public WAVAX = 0xd00ae08403B9bbb9124bB305C09058E32C39A48c;
     uint256 public count;
     address public poolContract;
+    uint256 public nonce=0;
+    uint256 public nonceChecker=1;
 
     // Mapping to keep track of the receiver contract per destination chain.
     mapping(uint64 => address) public s_receivers;
@@ -228,5 +230,21 @@ contract AvalancheSender is OwnerIsCreator {
 
     function trigger() public {
         count++;
+    }
+
+    function increaseNonce() public  {
+        nonce+=1;
+    }
+
+    function checkUpkeep(bytes calldata /*checkData*/ ) external view returns (bool upkeepNeeded,bytes memory /* performData */){
+        if(nonce=1){
+            upkeepNeeded=true;
+        }else{
+            upkeepNeeded=false;
+        }
+    }
+
+    function performUpkeep(bytes calldata /*performData*/) external{
+        nonceChecker=nonce+1;
     }
 }
