@@ -89,7 +89,7 @@ contract Pool is OwnerIsCreator, AutomationCompatibleInterface {
         i_router = IRouterClient(_router);
         i_linkToken = IERC20(_link);
         i_usdcToken = IERC20(_usdcToken);
-        setGasLimitForDestinationChain(14767482510784806043, 500000);
+        setGasLimitForDestinationChain(14767482510784806043, 1500000);
     }
 
     /// @dev Set the receiver contract for a given destination chain.
@@ -121,7 +121,6 @@ contract Pool is OwnerIsCreator, AutomationCompatibleInterface {
     /// @param _destinationChainSelector The selector of the destination chain.
     function deleteReceiverForDestinationChain(uint64 _destinationChainSelector)
         public
-        
         validateDestinationChain(_destinationChainSelector)
     {
         if (s_receivers[_destinationChainSelector] == address(0))
@@ -133,10 +132,8 @@ contract Pool is OwnerIsCreator, AutomationCompatibleInterface {
         uint64 _destinationChainSelector,
         uint256 _amount,
         uint256 _usdcAmount
-        
     )
         public
-        
         validateDestinationChain(_destinationChainSelector)
         returns (bytes32 messageId)
     {
@@ -156,7 +153,7 @@ contract Pool is OwnerIsCreator, AutomationCompatibleInterface {
             amount: _amount
         });
         // Create an EVM2AnyMessage struct in memory with necessary information for sending a cross-chain message
-        Client.EVM2AnyMessage memory evm2AnyMessage = ({
+        Client.EVM2AnyMessage memory evm2AnyMessage = Client.EVM2AnyMessage({
             receiver: abi.encode(receiver), // ABI-encoded receiver address
             data: abi.encodeWithSelector(
                 AvalancheSender.increaseNonce.selector,
@@ -215,10 +212,9 @@ contract Pool is OwnerIsCreator, AutomationCompatibleInterface {
         userDeposits[msg.sender] += usdAmount;
     }
 
-    function getReceipt(uint256 _amount, address _to) external {
-        if (_amount == 0) revert InvalidAmount();
-
-        i_usdcToken.safeTransferFrom(msg.sender, _to, _amount);
+    function getReceipt(uint256 _amount) external {
+        i_usdcToken.safeTransferFrom(msg.sender, address(this), _amount);
+        isWarned = false;
     }
 
     function checkUpkeep(
@@ -245,11 +241,13 @@ contract Pool is OwnerIsCreator, AutomationCompatibleInterface {
     function performUpkeep(
         bytes calldata /*performData*/
     ) external {
-        sendMessagePayLINK(14767482510784806043, 1,3000000);
+        sendMessagePayLINK(14767482510784806043, 1, 3000000);
         isWarned = true;
     }
 
     function decreaseUSDC() public {
-        i_usdcToken.transfer(msg.sender,1000000);
+        i_usdcToken.transfer(msg.sender, 1000000);
     }
+
+   
 }
