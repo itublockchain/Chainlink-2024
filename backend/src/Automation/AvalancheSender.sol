@@ -7,8 +7,8 @@ import {Client} from "@chainlink/contracts-ccip/src/v0.8/ccip/libraries/Client.s
 import {IERC20} from "@chainlink/contracts-ccip/src/v0.8/vendor/openzeppelin-solidity/v4.8.3/contracts/token/ERC20/IERC20.sol";
 import {SafeERC20} from "@chainlink/contracts-ccip/src/v0.8/vendor/openzeppelin-solidity/v4.8.3/contracts/token/ERC20/utils/SafeERC20.sol";
 import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
-import {Pool} from "./SepoliaPool.sol";
 import {AutomationCompatibleInterface} from "@chainlink/contracts/src/v0.8/automation/AutomationCompatible.sol";
+import {Pool} from "./Pool.sol";
 
 // ROUTER 0xf694e193200268f9a4868e4aa017a0118c9a8177
 // LINK 0x0b9d5D9136855f6FEc3c0993feE6E9CE8a297846
@@ -65,8 +65,8 @@ contract AvalancheSender is OwnerIsCreator,AutomationCompatibleInterface {
     address public WAVAX = 0xd00ae08403B9bbb9124bB305C09058E32C39A48c;
     uint256 public count;
     address public poolContract;
-    uint256 public nonce=0;
-    uint256 public nonceChecker=1;
+    uint256 public nonce = 0;
+    uint256 public nonceChecker = 1;
     uint256 public amount;
 
     // Mapping to keep track of the receiver contract per destination chain.
@@ -83,7 +83,6 @@ contract AvalancheSender is OwnerIsCreator,AutomationCompatibleInterface {
         _;
     }
 
-    
     constructor(
         address _router,
         address _link,
@@ -100,20 +99,17 @@ contract AvalancheSender is OwnerIsCreator,AutomationCompatibleInterface {
             0x5498BB86BC934c8D34FDA08E81D444153d0D06aD
         );
         poolContract = _poolContract;
-        setGasLimitForDestinationChain(16015286601757825753, 500000);
-        
+        setGasLimitForDestinationChain(16015286601757825753, 1500000);
     }
 
-   
     function setReceiverForDestinationChain(
         uint64 _destinationChainSelector,
         address _receiver
-    ) public  validateDestinationChain(_destinationChainSelector) {
+    ) public validateDestinationChain(_destinationChainSelector) {
         if (_receiver == address(0)) revert InvalidReceiverAddress();
         s_receivers[_destinationChainSelector] = _receiver;
     }
 
-    
     function setGasLimitForDestinationChain(
         uint64 _destinationChainSelector,
         uint256 _gasLimit
@@ -122,10 +118,8 @@ contract AvalancheSender is OwnerIsCreator,AutomationCompatibleInterface {
         s_gasLimits[_destinationChainSelector] = _gasLimit;
     }
 
-    
     function deleteReceiverForDestinationChain(uint64 _destinationChainSelector)
         public
-        
         validateDestinationChain(_destinationChainSelector)
     {
         if (s_receivers[_destinationChainSelector] == address(0))
@@ -137,8 +131,7 @@ contract AvalancheSender is OwnerIsCreator,AutomationCompatibleInterface {
         uint64 _destinationChainSelector,
         uint256 _amount
     )
-        external
-        
+        public
         validateDestinationChain(_destinationChainSelector)
         returns (bytes32 messageId)
     {
@@ -162,8 +155,7 @@ contract AvalancheSender is OwnerIsCreator,AutomationCompatibleInterface {
             receiver: abi.encode(receiver), // ABI-encoded receiver address
             data: abi.encodeWithSelector(
                 Pool.getReceipt.selector,
-                _amount,
-                poolContract
+                _amount
             ), // Encode the function selector and the arguments of the stake function
             tokenAmounts: tokenAmounts, // The amount and type of token being transferred
             extraArgs: Client._argsToBytes(
@@ -201,7 +193,6 @@ contract AvalancheSender is OwnerIsCreator,AutomationCompatibleInterface {
             messageId,
             _destinationChainSelector,
             receiver,
-            
             address(i_usdcToken),
             _amount,
             address(i_linkToken),
@@ -234,21 +225,32 @@ contract AvalancheSender is OwnerIsCreator,AutomationCompatibleInterface {
         count++;
     }
 
-    function increaseNonce(uint256 _amount) public  {
-        nonce+=1;
-        amount=_amount;
+    function increaseNonce(uint256 _amount) public {
+        nonce += 1;
+        amount = _amount;
     }
 
-    function checkUpkeep(bytes calldata /*checkData*/ ) external view returns (bool upkeepNeeded,bytes memory /* performData */){
-        if(nonce=nonceChecker){
-            upkeepNeeded=true;
-        }else{
-            upkeepNeeded=false;
+    function checkUpkeep(
+        bytes calldata /*checkData*/
+    )
+        external
+        view
+        returns (
+            bool upkeepNeeded,
+            bytes memory /* performData */
+        )
+    {
+        if (nonce == nonceChecker) {
+            upkeepNeeded = true;
+        } else {
+            upkeepNeeded = false;
         }
     }
 
-    function performUpkeep(bytes calldata /*performData*/) external{
-        nonceChecker=nonce+1;
+    function performUpkeep(
+        bytes calldata /*performData*/
+    ) external {
+        nonceChecker = nonce + 1;
         sendMessagePayLINK(16015286601757825753, amount);
     }
 }
