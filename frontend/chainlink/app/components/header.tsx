@@ -16,7 +16,7 @@ const Header = () => {
           <Link href={"/"}>
             <h1
               className={
-                pathname === "/" ? "text-white text-xl" : "text-white text-xl"
+                pathname === "/" ? "text-white text-3xl" : "text-white text-3xl"
               }
             >
               Fusionlink
